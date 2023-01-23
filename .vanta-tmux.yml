@@ -1,0 +1,13 @@
+name: vanta
+windows:
+  - services:
+      panes:
+        - start:
+            - /workspaces/obsidian/scripts/dev/start-services.sh web web-client lambda-pdf-generator api-service
+  - lazydocker:
+      panes:
+        - lazydocker:
+            - cd ~ && lazydocker
+  - shell:
+      panes:
+        - shell:
