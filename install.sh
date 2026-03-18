@@ -1,4 +1,6 @@
-#!/bin/sh
+#!/usr/bin/env bash
+
+set -e
 
 zshrc() {
     echo "==========================================================="
@@ -31,3 +33,17 @@ echo "# remove ls and directory completion highlight color" >> ~/.zshrc
 echo "_ls_colors=':ow=01;33'" >> ~/.zshrc
 echo 'zstyle ":completion:*:default" list-colors "${(s.:.)_ls_colors}"' >> ~/.zshrc
 echo 'LS_COLORS+=$_ls_colors' >> ~/.zshrc
+
+# ── stow setup (claude skills + obsidian project links) ──────────────────────
+if ! command -v stow &> /dev/null; then
+  echo "Installing stow..."
+  if [[ $OSTYPE == 'darwin'* ]]; then
+    brew install stow
+  elif [[ $OSTYPE == 'linux-gnu'* ]]; then
+    sudo apt-get install -y stow
+  fi
+fi
+
+bash "${HOME}/dotfiles/stow.sh"
+
+echo "Dotfiles setup complete."
