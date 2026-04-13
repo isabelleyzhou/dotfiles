@@ -7,7 +7,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "printf '\\a'",
+            "command": "printf '\\e]9;%s — Claude is waiting for input\\a' \"${ONA_ENV_NAME:-Ona}\"",
             "timeout": 5
           }
         ]
