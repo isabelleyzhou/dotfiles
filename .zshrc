@@ -110,6 +110,11 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias claude-danger='claude --dangerously-skip-permissions'
 
+# Cache Ona environment name for prompt (one-time network call at shell startup)
+if command -v gitpod &>/dev/null && [[ -z "$ONA_ENV_NAME" ]]; then
+  export ONA_ENV_NAME="$(gitpod environment list -r --field name 2>/dev/null)"
+fi
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 

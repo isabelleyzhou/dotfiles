@@ -46,4 +46,14 @@ fi
 
 bash "${HOME}/dotfiles/stow.sh"
 
+# ── personal git excludes (keeps stowed skills out of git status) ────────────
+if [ -d "/workspaces/obsidian/.git" ]; then
+  exclude_file="/workspaces/obsidian/.git/info/exclude"
+  for skill_dir in "${HOME}/dotfiles/obsidian/.claude/skills"/*/; do
+    skill_name="$(basename "$skill_dir")"
+    entry=".claude/skills/${skill_name}"
+    grep -qxF "$entry" "$exclude_file" 2>/dev/null || echo "$entry" >> "$exclude_file"
+  done
+fi
+
 echo "Dotfiles setup complete."

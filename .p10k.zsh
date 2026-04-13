@@ -30,7 +30,7 @@
 
   # The list of segments shown on the left. Fill it with the most important segments.
   typeset -g POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
-    # os_icon               # os identifier
+    ona_env                 # ona environment name
     dir                     # current directory
     vcs                     # git status
     # prompt_char           # prompt symbol
@@ -1573,6 +1573,12 @@
   typeset -g POWERLEVEL9K_TIME_VISUAL_IDENTIFIER_EXPANSION=
   # Custom prefix.
   # typeset -g POWERLEVEL9K_TIME_PREFIX='%248Fat '
+
+  # Ona environment name segment — displays $ONA_ENV_NAME (set in .zshrc at startup)
+  function prompt_ona_env() {
+    [[ -n "$ONA_ENV_NAME" ]] || return
+    p10k segment -f 141 -t "$ONA_ENV_NAME"
+  }
 
   # Example of a user-defined prompt segment. Function prompt_example will be called on every
   # prompt if `example` prompt segment is added to POWERLEVEL9K_LEFT_PROMPT_ELEMENTS or
