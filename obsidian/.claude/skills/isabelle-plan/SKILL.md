@@ -5,18 +5,18 @@ description: Create and store project plans in the shared plans directory with r
 
 # Plan Creation
 
-When this skill is invoked, you MUST use the `EnterPlanMode` tool immediately to enter Claude's built-in plan mode. Do your research and write your plan while in plan mode, then use `ExitPlanMode` when the plan is ready for review.
+**Do NOT enter plan mode.** Write the plan directly as a markdown file. Do not edit any code or make any changes to the codebase until the user explicitly gives the OK to proceed with implementation.
+
+All plans must be stored in `/workspaces/obsidian/.claude/plans/`. This directory is symlinked from dotfiles and shared across all Ona instances.
 
 ## Workflow
 
-1. Call `EnterPlanMode` to enter plan mode
-2. Explore the codebase — read files, search for patterns, understand the existing architecture
-3. Write your plan to the plan file (provided by plan mode)
-4. Call `ExitPlanMode` to present the plan for user approval
+1. Research the codebase as needed to inform the plan (read files, search, etc.)
+2. Write the plan to a `.md` file in `/workspaces/obsidian/.claude/plans/`
+3. Output only the file path — do not display plan content in chat
+4. **Stop and wait.** Do not edit any code until the user says to proceed.
 
-After the plan is approved and implemented, save a copy of the final plan to `/workspaces/obsidian/.claude/plans/` for future reference. This directory is symlinked from dotfiles and shared across all Ona instances.
-
-## Plan file naming
+## File format
 
 - Use markdown (`.md`) files
 - Name files descriptively in kebab-case (e.g., `auth-migration-plan.md`, `risk-dashboard-refactor.md`)
