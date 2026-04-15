@@ -14,10 +14,10 @@ Perform a first-pass review of the current branch's PR so it's ready for a human
 3. **Add inline comments** directly in the source code at the relevant line. Every comment MUST follow this exact format:
 
 ```
-// TODO-ISABELLE-PR-REVIEW [<category>]: <message>
+// TODO-ISABELLE-PR-REVIEW #<id> [<category>]: <message>
 ```
 
-Where `<category>` is one of `nit`, `suggest`, or `disc` (see below).
+Where `<id>` is a unique sequential integer starting at 1 (incremented per comment across all files), and `<category>` is one of `nit`, `suggest`, or `disc` (see below). The ID makes each comment individually referenceable (e.g. "fix #3", "drop #7").
 
 4. **After reviewing all files**, print a summary listing:
    - Total comments added, broken down by category
@@ -31,7 +31,7 @@ Formatting issues, typos, naming inconsistencies, minor style problems, unused i
 
 **Example:**
 ```ts
-// TODO-ISABELLE-PR-REVIEW [nit]: Variable name `d` is not descriptive — consider `durationMs` or similar
+// TODO-ISABELLE-PR-REVIEW #1 [nit]: Variable name `d` is not descriptive — consider `durationMs` or similar
 const d = Date.now() - start;
 ```
 
@@ -40,7 +40,7 @@ Harder issues where you have a concrete idea of how to fix them. Include the sug
 
 **Example:**
 ```ts
-// TODO-ISABELLE-PR-REVIEW [suggest]: This block duplicates the logic in `validateInput()` above — consider extracting a shared helper
+// TODO-ISABELLE-PR-REVIEW #2 [suggest]: This block duplicates the logic in `validateInput()` above — consider extracting a shared helper
 if (input.length > 0 && input !== 'default') {
 ```
 
@@ -49,7 +49,7 @@ Architectural questions, trade-off decisions, or unclear requirements where you 
 
 **Example:**
 ```ts
-// TODO-ISABELLE-PR-REVIEW [disc]: Should this silently swallow the error? The caller may need to know about failures here
+// TODO-ISABELLE-PR-REVIEW #3 [disc]: Should this silently swallow the error? The caller may need to know about failures here
 } catch (e) {
   return null;
 }
@@ -85,7 +85,7 @@ Architectural questions, trade-off decisions, or unclear requirements where you 
 
 ## Rules
 
-- Do NOT modify any code other than adding `// TODO-ISABELLE-PR-REVIEW` comments.
+- Do NOT modify any code other than adding `// TODO-ISABELLE-PR-REVIEW #<id>` comments.
 - Do NOT remove or change existing code, comments, or formatting.
 - Place each comment on the line directly above the code it refers to.
 - Be specific and actionable in every comment — vague feedback is not helpful.
