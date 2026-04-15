@@ -26,8 +26,28 @@ All plans must be stored in `/workspaces/obsidian/.claude/plans/`. This director
 Every plan must include:
 
 1. **Title and goal** — what this plan accomplishes
-2. **Steps** — ordered list of changes to make
+2. **PR breakdown** — every plan must be broken into multiple PRs (see below)
 3. **Code examples** — every proposed change must include a concrete code example showing what the code looks like before and after, or what new code will be added. Do not describe changes in prose alone.
+
+## PR breakdown
+
+Always break the work into multiple PRs. Each PR should be a reviewable, shippable unit. Include:
+
+1. **PR summary table** at the top — a table with columns: PR number, short title, and dependencies (which PRs must land first). Example:
+
+   | PR | Title | Dependencies |
+   |----|-------|-------------|
+   | PR 1 | Add fields to schema and entity | None |
+   | PR 2 | Wire up writers with dual-write | PR 1 |
+   | PR 3 | Switch readers to new source with fallback | PR 2 |
+
+2. **Per-PR sections** — for each PR, list everything that needs to happen:
+   - All files that will be created or modified
+   - Code examples (before/after) for each change
+   - Test changes required
+   - Any migration scripts, feature flags, or deployment considerations
+
+Think about ordering PRs to minimize risk: additive/data-layer changes first, then writers (dual-write when transitioning), then readers (with fallback), then migrations, then cleanup.
 
 ## Tips
 
