@@ -23,6 +23,7 @@ Where `<id>` is a unique sequential integer starting at 1 (incremented per comme
    - Total comments added, broken down by category
    - Files that were commented on
    - Any files that lack unit test coverage for the changes made
+5. **Generate a PR description** using the format in the "PR Description Output" section below. Print it as the very last thing in the skill output, after the review summary.
 
 ## Comment Categories
 
@@ -91,3 +92,37 @@ Architectural questions, trade-off decisions, or unclear requirements where you 
 - Be specific and actionable in every comment — vague feedback is not helpful.
 - When in doubt about severity, prefer `[suggest]` over `[disc]`. Only use `[disc]` when genuinely uncertain.
 - For test files, only flag issues if the test itself is incorrect or misleading — don't flag test style nits.
+
+## PR Description Output
+
+After the review summary, always emit a PR description for the current branch in the exact markdown format below. Derive the content from `git log main..HEAD`, the cumulative diff, and the user's prompts in the current conversation — keep it succinct, prefer the imperative voice for changes, and don't pad. Print it as a fenced ` ```markdown ` block so the user can copy/paste cleanly into GitHub.
+
+```markdown
+## Changes
+- <one bullet per meaningful change; refer to specific files/symbols where it helps the reviewer>
+
+## Motivation
+<1–3 sentences. Why this PR exists. If it's part of a larger plan/migration, name the plan and where this PR fits.>
+
+## Testing
+- <new/updated tests, what they cover, and pass count if relevant>
+- <typecheck / lint scope and result>
+
+## Deployment
+<Plain rollout steps. Note any feature flag, migration, or staging concerns. If unflagged and uneventful, say "Standard deploy — no flag, no migration.">
+
+**Feature Flag Name:** `<flag_name_or_n/a>`
+
+## AI Model used and major prompts used
+<Model name and "(1M context)" if applicable, e.g. "Opus 4.7 (1M context)".>
+
+- "<verbatim or near-verbatim user prompt>" — <one-line summary of what it produced>
+- <repeat for each major prompt that shaped the PR; skip trivial back-and-forth>
+```
+
+**Filling rules:**
+- **Changes**: enumerate from the commit log + diff, grouping related commits into a single bullet. Don't list every commit verbatim.
+- **Feature Flag Name**: pull from the branch's diff (look for `StatsigFeatureFlag.X` additions or new `Statsig`/feature-flag enum entries). If the PR doesn't introduce or rely on a flag, write `n/a`.
+- **AI Model**: read the current model from the runtime ("You are powered by..." line in the system prompt). Include the context-window suffix when present.
+- **Major prompts**: pick the user prompts in this conversation that drove substantive direction changes (initial implementation request, refactor requests, structural decisions). Skip pure mechanics ("force push", "yes", "ok"). Each entry: short quote of the prompt, em-dash, what it produced.
+- If any section genuinely has nothing to say, omit the bullet but keep the heading and write `n/a`.
