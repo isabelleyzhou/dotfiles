@@ -1,5 +1,4 @@
 {
-  "skipDangerousModePermissionPrompt": true,
   "hooks": {
     "Notification": [
       {
@@ -13,5 +12,9 @@
         ]
       }
     ]
+  },
+  "skipDangerousModePermissionPrompt": true,
+  "enabledPlugins": {
+    "superpowers@claude-plugins-official": true
   }
 }
