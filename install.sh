@@ -44,7 +44,40 @@ if ! command -v stow &> /dev/null; then
   fi
 fi
 
+# jq is used below to merge settings.json (which is NOT symlinked — Claude rewrites it at runtime).
+if ! command -v jq &> /dev/null; then
+  echo "Installing jq..."
+  if [[ $OSTYPE == 'darwin'* ]]; then
+    brew install jq
+  elif [[ $OSTYPE == 'linux-gnu'* ]]; then
+    sudo apt-get install -y jq
+  fi
+fi
+
 bash "${HOME}/dotfiles/stow.sh"
+
+# ── merge Claude settings (settings.json is .stow-local-ignore'd, not symlinked) ─────────────
+# Deep-merge the repo's intended settings (hooks, enabledPlugins, …) into the live
+# ~/.claude/settings.json so Claude can still own runtime keys (marketplaces, model). Repo values
+# win on overlapping keys; everything Claude wrote that the repo doesn't mention is preserved.
+repo_settings="${HOME}/dotfiles/claude/.claude/settings.json"
+live_settings="${HOME}/.claude/settings.json"
+if [ -f "$repo_settings" ]; then
+  mkdir -p "${HOME}/.claude"
+  if [ -f "$live_settings" ] && command -v jq &> /dev/null; then
+    tmp_settings="$(mktemp)"
+    if jq -s '.[0] * .[1]' "$live_settings" "$repo_settings" > "$tmp_settings"; then
+      mv "$tmp_settings" "$live_settings"
+      echo "Merged Claude settings into $live_settings"
+    else
+      rm -f "$tmp_settings"
+      echo "WARN: failed to merge settings.json; left $live_settings unchanged"
+    fi
+  elif [ ! -f "$live_settings" ]; then
+    cp "$repo_settings" "$live_settings"
+    echo "Created $live_settings from repo settings"
+  fi
+fi
 
 # ── personal git excludes (keeps stowed skills out of git status) ────────────
 if [ -d "/workspaces/obsidian/.git" ]; then

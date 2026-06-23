@@ -1,0 +1,4 @@
+# Do NOT symlink settings.json — Claude Code rewrites it at runtime (extraKnownMarketplaces,
+# model, etc.). Symlinking it would write that machine state back into this repo. install.sh
+# merges the repo's intended settings into ~/.claude/settings.json instead (see install.sh).
+settings\.json
