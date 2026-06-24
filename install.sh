@@ -79,6 +79,14 @@ if [ -f "$repo_settings" ]; then
   fi
 fi
 
+# ── gh auth: derive GH_TOKEN from the valid Ona git credential ───────────────
+# .zshrc is installed via `cat` above and already sources gh-token.sh. ~/.bashrc is
+# the base-image file (not managed here), so append the source idempotently for bash.
+gh_src_line='[ -f "$HOME/dotfiles/gh-token.sh" ] && . "$HOME/dotfiles/gh-token.sh"'
+if ! grep -qF "dotfiles/gh-token.sh" "$HOME/.bashrc" 2>/dev/null; then
+  printf '\n# gh auth: derive GH_TOKEN from the valid Ona git credential\n%s\n' "$gh_src_line" >> "$HOME/.bashrc"
+fi
+
 # ── personal git excludes (keeps stowed skills out of git status) ────────────
 if [ -d "/workspaces/obsidian/.git" ]; then
   exclude_file="/workspaces/obsidian/.git/info/exclude"

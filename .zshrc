@@ -118,3 +118,6 @@ fi
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
+
+# gh auth: derive GH_TOKEN from the valid Ona git credential
+[ -f "$HOME/dotfiles/gh-token.sh" ] && . "$HOME/dotfiles/gh-token.sh"
