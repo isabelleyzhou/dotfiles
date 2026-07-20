@@ -97,4 +97,24 @@ if [ -d "/workspaces/obsidian/.git" ]; then
   done
 fi
 
+# ── EFS shared filesystem link (surface /home/vscode/shared inside project) ──
+# Symlinks the mounted EFS share into the Obsidian project tree so it opens
+# alongside the vault in Ona/VS Code. Personal + git-excluded; no repo changes.
+OBSIDIAN_DIR="/workspaces/obsidian"
+SHARED_DIR="/home/vscode/shared"
+LINK_PATH="${OBSIDIAN_DIR}/AI-Plans"
+
+if [ -d "$OBSIDIAN_DIR" ] && [ -d "$SHARED_DIR" ]; then
+  ln -sfn "$SHARED_DIR" "$LINK_PATH"
+  echo "Linked ${LINK_PATH} -> ${SHARED_DIR}"
+
+  # Keep the personal symlink out of git status.
+  if [ -d "${OBSIDIAN_DIR}/.git/info" ]; then
+    grep -qxF '/AI-Plans' "${OBSIDIAN_DIR}/.git/info/exclude" 2>/dev/null ||
+      echo '/AI-Plans' >> "${OBSIDIAN_DIR}/.git/info/exclude"
+  fi
+else
+  echo "Skipping EFS link: ${OBSIDIAN_DIR} or ${SHARED_DIR} not present."
+fi
+
 echo "Dotfiles setup complete."
