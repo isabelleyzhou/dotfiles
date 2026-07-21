@@ -121,3 +121,6 @@ fi
 
 # gh auth: derive GH_TOKEN from the valid Ona git credential
 [ -f "$HOME/dotfiles/gh-token.sh" ] && . "$HOME/dotfiles/gh-token.sh"
+
+# Link EFS share into the Obsidian project tree (once workspace + mount exist)
+[ -f "$HOME/dotfiles/link-efs.sh" ] && . "$HOME/dotfiles/link-efs.sh"
