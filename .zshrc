@@ -124,3 +124,11 @@ fi
 
 # Link EFS share into the Obsidian project tree (once workspace + mount exist)
 [ -f "$HOME/dotfiles/link-efs.sh" ] && . "$HOME/dotfiles/link-efs.sh"
+
+# Run a command inside an Ona environment by friendly name: onx <env-name> <cmd...>
+onx() {
+  local name="$1"; shift
+  local id=$(ona environment list --running-only -o json 2>/dev/null | python3 -c "import sys,json;print(next((e['id'] for e in json.load(sys.stdin) if e.get('metadata',{}).get('name')=='$name'),''))")
+  [ -z "$id" ] && { echo "onx: no running env named '$name'" >&2; return 1; }
+  ona environment exec "$id" -- "$@"
+}
