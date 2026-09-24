@@ -1,0 +1,31 @@
+{
+  "name": "cursor-shared-root",
+  "displayName": "Personal Shared Root",
+  "description": "Adds the personal EFS shared directory beside Obsidian in remote Cursor windows.",
+  "version": "1.0.0",
+  "publisher": "isabelleyzhou",
+  "license": "UNLICENSED",
+  "repository": "https://github.com/isabelleyzhou/dotfiles",
+  "files": [
+    "extension.js",
+    "LICENSE"
+  ],
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "main": "./extension.js",
+  "extensionKind": [
+    "workspace"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": true
+    }
+  }
+}

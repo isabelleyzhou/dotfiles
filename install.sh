@@ -97,13 +97,4 @@ if [ -d "/workspaces/obsidian/.git" ]; then
   done
 fi
 
-# ── EFS shared filesystem link (surface /home/vscode/shared inside project) ──
-# The EFS mount attaches AFTER dotfiles run, so we can't link it here reliably.
-# link-efs.sh does it at shell startup instead. .zshrc is installed via `cat` above
-# and already sources it; wire ~/.bashrc (base-image file) the same way for bash.
-efs_src_line='[ -f "$HOME/dotfiles/link-efs.sh" ] && . "$HOME/dotfiles/link-efs.sh"'
-if ! grep -qF "dotfiles/link-efs.sh" "$HOME/.bashrc" 2>/dev/null; then
-  printf '\n# Link EFS share into the Obsidian project tree (once workspace + mount exist)\n%s\n' "$efs_src_line" >> "$HOME/.bashrc"
-fi
-
 echo "Dotfiles setup complete."
