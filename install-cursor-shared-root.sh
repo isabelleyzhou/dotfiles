@@ -1,15 +1,17 @@
 #!/usr/bin/env bash
 
 # Install the personal remote Cursor extension after Ona has mounted EFS.
-# This script may start before Cursor has downloaded its remote server, so wait
-# for the server-side extension installer instead of requiring a live window.
+# Fresh environments can use a per-instance ~/.cursor-server directory instead
+# of the EFS copy, and that directory does not exist until Cursor first connects.
+# Keep waiting for it and install into both profiles with Cursor's server-side
+# installer; this does not require a live window IPC socket.
 
 set -u
 
 dotfiles_dir="${HOME}/dotfiles"
 vsix_path="${dotfiles_dir}/cursor-shared-root/isabelleyzhou.cursor-shared-root-1.0.0.vsix"
-cursor_data_dir="${HOME}/shared/.cursor-server"
-extensions_dir="${cursor_data_dir}/extensions"
+live_data_dir="${HOME}/.cursor-server"
+efs_data_dir="${HOME}/shared/.cursor-server"
 extension_version="isabelleyzhou.cursor-shared-root@1.0.0"
 lock_dir="/tmp/isabelleyzhou-cursor-shared-root-install.lock"
 
@@ -23,29 +25,51 @@ if [ ! -f "$vsix_path" ]; then
   exit 1
 fi
 
-mkdir -p "$extensions_dir"
+find_cursor_server() {
+  find "${live_data_dir}/bin" "${efs_data_dir}/bin" \
+    -path '*/bin/cursor-server' -type f -perm -u+x -print 2>/dev/null |
+    sort | tail -n 1
+}
 
-# Allow up to ten minutes for a first Cursor connection to download its server.
-for _attempt in $(seq 1 120); do
+install_into() {
+  local cursor_server="$1"
+  local data_dir="$2"
+  local extensions_dir="${data_dir}/extensions"
+
+  mkdir -p "$extensions_dir"
+  if "$cursor_server" --extensions-dir "$extensions_dir" \
+    --list-extensions --show-versions 2>/dev/null | grep -qxF "$extension_version"; then
+    printf 'Cursor shared-root extension is already installed in %s.\n' "$data_dir"
+    return 0
+  fi
+
+  "$cursor_server" --extensions-dir "$extensions_dir" \
+    --install-extension "$vsix_path" --force
+}
+
+efs_installed=0
+
+# Wait up to 24 hours so opening Cursor well after environment startup still
+# installs into the per-instance server before the next window reload.
+for _attempt in $(seq 1 17280); do
   cursor_server="$(
-    find "${cursor_data_dir}/bin" -path '*/bin/cursor-server' -type f -perm -u+x \
-      -print 2>/dev/null | sort | tail -n 1
+    find_cursor_server
   )"
 
   if [ -n "$cursor_server" ]; then
-    if "$cursor_server" --extensions-dir "$extensions_dir" \
-      --list-extensions --show-versions 2>/dev/null | grep -qxF "$extension_version"; then
-      printf 'Cursor shared-root extension is already installed.\n'
-      exit 0
+    if [ "$efs_installed" -eq 0 ]; then
+      install_into "$cursor_server" "$efs_data_dir"
+      efs_installed=1
     fi
 
-    "$cursor_server" --extensions-dir "$extensions_dir" \
-      --install-extension "$vsix_path" --force
-    exit $?
+    if [ -d "$live_data_dir" ]; then
+      install_into "$cursor_server" "$live_data_dir"
+      exit 0
+    fi
   fi
 
   sleep 5
 done
 
-printf 'Cursor server did not appear within ten minutes; extension was not installed.\n' >&2
+printf 'The live Cursor server did not appear within 24 hours; extension was not installed there.\n' >&2
 exit 1

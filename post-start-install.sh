@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
 # Ona runs this after persistent EFS is mounted. Installation continues in the
-# background because Cursor may not have connected (and downloaded its server)
-# yet. The extension itself activates on editor connection.
+# background because Cursor may not have connected (and created its live server
+# profile) yet. The extension itself activates after installation on a reload or
+# subsequent editor connection.
 
 set -u
 

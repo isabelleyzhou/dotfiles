@@ -34,14 +34,14 @@ After setting this, every new Ona workspace will automatically clone this repo a
 ### Cursor: show the EFS share beside Obsidian
 
 `post-start-install.sh` installs the personal `isabelleyzhou.cursor-shared-root`
-extension into the Cursor server stored on EFS. When a remote Cursor window finishes
-starting with `/workspaces/obsidian` open, the extension adds `/home/vscode/shared`
-as a second Explorer root named `Shared`.
+extension into both the live per-instance Cursor server and the copy stored on EFS.
+When a remote Cursor window finishes starting with `/workspaces/obsidian` open, the
+extension adds `/home/vscode/shared` as a second Explorer root named `Shared`.
 
 The hook runs before Cursor is necessarily connected, so the installer waits in the
-background for Cursor's remote server binary. On a brand-new EFS volume, the first
-connection can win that race and require one window reload; after the extension is
-installed on EFS, subsequent Ona instances load it automatically on connection.
+background for Cursor's per-instance server directory. The first connection can win
+that race and require one window reload; subsequent connections in that instance load
+the extension automatically.
 
 ## Adding a new Claude skill
 
