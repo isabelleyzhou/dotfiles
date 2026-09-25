@@ -2,9 +2,10 @@
 
 # Install the personal remote Cursor extension after Ona has mounted EFS.
 # Fresh environments can use a per-instance ~/.cursor-server directory instead
-# of the EFS copy, and that directory does not exist until Cursor first connects.
-# Keep waiting for it and install into both profiles with Cursor's server-side
-# installer; this does not require a live window IPC socket.
+# of the EFS copy. Pre-create its extension directory and install into both
+# profiles before Cursor first connects; this does not require a live window IPC
+# socket. If EFS has no Cursor binary yet, wait for the first connection to
+# download one and then install for the next reload.
 
 set -u
 
@@ -49,8 +50,9 @@ install_into() {
 
 efs_installed=0
 
-# Wait up to 24 hours so opening Cursor well after environment startup still
-# installs into the per-instance server before the next window reload.
+# On the normal path, the existing EFS Cursor binary installs into the fresh
+# local profile immediately. Wait up to 24 hours only for a brand-new EFS volume
+# that has never downloaded a Cursor server.
 for _attempt in $(seq 1 17280); do
   cursor_server="$(
     find_cursor_server
@@ -62,10 +64,8 @@ for _attempt in $(seq 1 17280); do
       efs_installed=1
     fi
 
-    if [ -d "$live_data_dir" ]; then
-      install_into "$cursor_server" "$live_data_dir"
-      exit 0
-    fi
+    install_into "$cursor_server" "$live_data_dir"
+    exit 0
   fi
 
   sleep 5

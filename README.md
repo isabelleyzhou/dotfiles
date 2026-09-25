@@ -38,10 +38,10 @@ extension into both the live per-instance Cursor server and the copy stored on E
 When a remote Cursor window finishes starting with `/workspaces/obsidian` open, the
 extension adds `/home/vscode/shared` as a second Explorer root named `Shared`.
 
-The hook runs before Cursor is necessarily connected, so the installer waits in the
-background for Cursor's per-instance server directory. The first connection can win
-that race and require one window reload; subsequent connections in that instance load
-the extension automatically.
+The hook runs before Cursor is necessarily connected. When EFS already has a Cursor
+server binary, the installer pre-creates the per-instance extension directory and
+installs the helper before the first connection. Only a brand-new EFS volume with no
+Cursor server binary can require one window reload.
 
 ## Adding a new Claude skill
 
