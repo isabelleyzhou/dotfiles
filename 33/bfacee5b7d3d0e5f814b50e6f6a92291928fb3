@@ -1,0 +1,23 @@
+claude/.claude/CLAUDE.md
+  s_9e69dd53366b70::t_3af4df64da25af 11
+obsidian/.claude/skills/isabelle-first-pass/SKILL.md
+  s_9e69dd53366b70::t_17185401b22a2d 2
+obsidian/.claude/skills/isabelle-review/SKILL.md
+  s_9e69dd53366b70::t_6078b3ceb37552 1-87
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.9",
+  "base_commit_sha": "33bfacee5b7d3d0e5f814b50e6f6a92291928fb3",
+  "prompts": {},
+  "sessions": {
+    "s_9e69dd53366b70": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "s_9e69dd53366b70",
+        "model": "unknown"
+      },
+      "human_author": "Isabelle Zhou <isabellezhou@berkeley.edu>"
+    }
+  }
+}
