@@ -8,7 +8,7 @@ When any superpowers planning skill activates (`writing-plans`, `write-plan`, `b
 
 Do **not** write plans to `docs/superpowers/specs/` — that directory is off-limits even though several superpowers skills default to it. If a skill instructs you to write there, override and use `.claude/plans/` instead.
 
-Follow the structure documented in the `isabelle-plan` skill: title and goal, PR breakdown table, TDD commit breakdown per PR, and concrete before/after code examples for every proposed change.
+Include a title and goal, PR breakdown table, TDD commit breakdown per PR, and concrete before/after code examples for every proposed change.
 
 ## Implementing plans (subagent-driven development)
 

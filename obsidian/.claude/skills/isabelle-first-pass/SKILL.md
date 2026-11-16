@@ -1,5 +1,5 @@
 ---
-name: isabelle-pr-review
+name: isabelle-first-pass
 description: Self-review your PR before sending to reviewers — adds categorized inline TODO comments to flag issues
 ---
 
