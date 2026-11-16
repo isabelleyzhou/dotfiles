@@ -1,0 +1,39 @@
+obsidian/.claude/skills/sail/SKILL.md
+  s_a7454e7d072b8e::t_3b75d2b9f72e82 1-84
+obsidian/.claude/skills/sail/agents/openai.yaml
+  s_a7454e7d072b8e::t_caa6331cca7e94 1-5
+obsidian/.claude/skills/sail/references/dashboard.md
+  s_a7454e7d072b8e::t_0028c5ce1a0c84 1-71
+obsidian/.claude/skills/sail/references/diagram.md
+  s_a7454e7d072b8e::t_30bbb5fe3be9b3 1-55
+obsidian/.claude/skills/sail/references/evaluator.md
+  s_a7454e7d072b8e::t_ca6782e079a2ad 1-53
+obsidian/.claude/skills/sail/references/fix-round.md
+  s_a7454e7d072b8e::t_5d8cd389833638 1-36
+obsidian/.claude/skills/sail/references/run-voyage.md
+  s_a7454e7d072b8e::t_68cc461dd14338 1-102
+obsidian/.claude/skills/sail/references/set-a-course.md
+  s_a7454e7d072b8e::t_7f31d1b96b63d6 1-84
+obsidian/.claude/skills/sail/references/setup.md
+  s_a7454e7d072b8e::t_1b1a6afb85673d 1-110
+obsidian/.claude/skills/sail/references/testing-principles.md
+  s_a7454e7d072b8e::t_324cee718440c4 1-22
+obsidian/.claude/skills/sail/references/worker.md
+  s_a7454e7d072b8e::t_fc6815fe6a9259 1-146
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.9",
+  "base_commit_sha": "b45516fa99d34b77ca4c6e00b89d44a0d74c687f",
+  "prompts": {},
+  "sessions": {
+    "s_a7454e7d072b8e": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "s_a7454e7d072b8e",
+        "model": "unknown"
+      },
+      "human_author": "Isabelle Zhou <isabellezhou@berkeley.edu>"
+    }
+  }
+}
