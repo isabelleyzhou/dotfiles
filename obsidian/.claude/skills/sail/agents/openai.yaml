@@ -1,0 +1,5 @@
+interface:
+  display_name: "Sail"
+  short_description: "Plan locally and delegate code work to Ona"
+policy:
+  allow_implicit_invocation: false
